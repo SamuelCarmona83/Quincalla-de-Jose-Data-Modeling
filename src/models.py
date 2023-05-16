@@ -45,24 +45,23 @@ categories_association_table = Table(
 
 class Categoria(Base):
     __tablename__ = 'categories'
-
     id: Mapped[int] = mapped_column(primary_key=True)
-
     name = Column(String(80), nullable=False)
     productos : Mapped[List['Products']] = relationship(secondary=categories_association_table, back_populates="categories")
 
 class Products(Base):
     __tablename__ = 'products'
-
     id: Mapped[int] = mapped_column(primary_key=True)
-
     name = Column(String(80), nullable=False, unique=False)
-
     description = Column(String(1024), nullable=True)
     precio = Column(Numeric(2), nullable=False)
-
     categorias : Mapped[List['Categoria']] = relationship(secondary=categories_association_table, back_populates="products")
 
+class ShoppingCart(Base):
+    __tablename__ = 'cart'
+    id = Column(Integer, primary_key=True)
+    user = relationship("Person", backref="carrito")
+    productos = relationship("Productos", backref="likes")
 
 
 ## Draw from SQLAlchemy base
