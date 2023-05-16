@@ -19,6 +19,7 @@ class Person(Base):
     last_name = Column(String(250), nullable=False)
     email = Column(String(80), unique=True)
 
+    carrito_id = Column(Integer, ForeignKey("cart.id"))
     carrito = relationship("ShoppingCart", backref="user")
 
 
