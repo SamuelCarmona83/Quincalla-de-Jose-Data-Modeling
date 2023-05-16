@@ -60,7 +60,9 @@ class Products(Base):
 class ShoppingCart(Base):
     __tablename__ = 'cart'
     id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("person.id"))
     user = relationship("Person", backref="carrito")
+    productos_id = Column(Integer, ForeignKey("products.id"))
     productos = relationship("Productos", backref="likes")
 
 
