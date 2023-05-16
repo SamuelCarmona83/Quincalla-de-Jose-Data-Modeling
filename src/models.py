@@ -1,6 +1,6 @@
 import os
 import sys
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String, Numeric
 from sqlalchemy.orm import relationship, declarative_base
 from sqlalchemy import create_engine
 
@@ -14,7 +14,8 @@ class Person(Base):
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
-    last_name = Column(String(), nullable=False)
+    last_name = Column(String(250), nullable=False)
+    email = Column(String(80), unique=True)
 
 
 class Address(Base):
@@ -30,6 +31,26 @@ class Address(Base):
 
     def to_dict(self):
         return {}
+
+
+
+class Products(Base):
+    __tablename__ = 'products'
+
+    id = Column(Integer, primary_key=True)
+
+    name = Column(String(80), nullable=False, unique=False)
+
+    description = Column(String(1024), nullable=True)
+    precio = Column(Numeric(2), nullable=False)
+    categoria = Column(String(50), nullable=False )
+
+
+
+
+
+
+
 
 ## Draw from SQLAlchemy base
 render_er(Base, 'diagram.png')
