@@ -43,10 +43,16 @@ class Products(Base):
 
     description = Column(String(1024), nullable=True)
     precio = Column(Numeric(2), nullable=False)
-    categoria = Column(String(50), nullable=False )
+
+    categoria_id = Column(Integer, ForeignKey('categories.id'))
+    categorias = relationship("Categoria", backref="productos")
 
 
-
+class Categoria(Base):
+    __tablename__ = 'categories'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(80), nullable=False)
+    # productos [] = relationchip() 
 
 
 
