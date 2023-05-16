@@ -1,9 +1,11 @@
 import os
 import sys
-from sqlalchemy import Column, ForeignKey, Integer, String, Numeric
+from sqlalchemy import Column, ForeignKey, Integer, String, Numeric, Table
+from sqlalchemy.orm import Mapped
+from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship, declarative_base
 from sqlalchemy import create_engine
-
+from typing import List
 from eralchemy2 import render_er
 
 Base = declarative_base()
@@ -33,28 +35,33 @@ class Address(Base):
         return {}
 
 
+categories_association_table = Table(
+    "categories_association_table",
+    Base.metadata,
+    Column("product_id", ForeignKey("products.id"), primary_key=True),
+    Column("categories_id", ForeignKey("categories.id"), primary_key=True),
+    # products
+)
+
+class Categoria(Base):
+    __tablename__ = 'categories'
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+
+    name = Column(String(80), nullable=False)
+    productos : Mapped[List['Products']] = relationship(secondary=categories_association_table, back_populates="categories")
 
 class Products(Base):
     __tablename__ = 'products'
 
-    id = Column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
 
     name = Column(String(80), nullable=False, unique=False)
 
     description = Column(String(1024), nullable=True)
     precio = Column(Numeric(2), nullable=False)
 
-    categoria_id = Column(Integer, ForeignKey('categories.id'))
-    categorias = relationship("Categoria", backref="productos")
-
-
-class Categoria(Base):
-    __tablename__ = 'categories'
-    id = Column(Integer, primary_key=True)
-    name = Column(String(80), nullable=False)
-    # productos [] = relationchip() 
-
-
+    categorias : Mapped[List['Categoria']] = relationship(secondary=categories_association_table, back_populates="products")
 
 
 
