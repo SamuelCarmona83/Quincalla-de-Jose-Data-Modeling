@@ -19,8 +19,8 @@ class Person(Base):
     last_name = Column(String(250), nullable=False)
     email = Column(String(80), unique=True)
 
-    carrito_id = Column(Integer, ForeignKey("cart.id"))
-    carrito = relationship("ShoppingCart", backref="user")
+    # carrito_id = Column(Integer, ForeignKey("cart.id"))
+    # carrito = relationship("ShoppingCart", backref="user")
 
 
 class Address(Base):
@@ -63,10 +63,10 @@ class Products(Base):
 class ShoppingCart(Base):
     __tablename__ = 'cart'
     id = Column(Integer, primary_key=True)
-    # user_id = Column(Integer, ForeignKey("person.id"))
-    # user = relationship("Person", backref="carrito")
-    # productos_id = Column(Integer, ForeignKey("products.id"))
-    # productos = relationship("Productos", backref="likes")
+    user_id = Column(Integer, ForeignKey("person.id"))
+    user = relationship("Person", backref="carrito")
+    productos_id = Column(Integer, ForeignKey("products.id"))
+    productos = relationship("Productos", backref="likes")
 
 
 ## Draw from SQLAlchemy base
